@@ -1,0 +1,84 @@
+const readline = require('readline');
+
+// Create an interface for reading input
+const rl = readline.createInterface({
+  input: process.stdin,
+  output: process.stdout
+});
+
+// Array to hold employee data
+let employees = [
+  { name: 'Alice', id: 'E101' },
+  { name: 'Bob', id: 'E102' },
+  { name: 'Charlie', id: 'E103' }
+];
+
+// Function to display the menu
+function displayMenu() {
+  console.log('Employee Management System');
+  console.log('1. Add Employee');
+  console.log('2. List Employees');
+  console.log('3. Remove Employee');
+  console.log('4. Exit');
+}
+
+// Function to add a new employee
+function addEmployee() {
+  rl.question('Enter employee name: ', (name) => {
+    rl.question('Enter employee ID: ', (id) => {
+      employees.push({ name, id });
+      console.log(`Employee ${name} added with ID: ${id}`);
+      mainMenu();
+    });
+  });
+}
+
+// Function to list all employees
+function listEmployees() {
+  console.log('Employee List:');
+  employees.forEach((employee, index) => {
+    console.log(`${index + 1}. Name: ${employee.name}, ID: ${employee.id}`);
+  });
+  mainMenu();
+}
+
+// Function to remove an employee by ID
+function removeEmployee() {
+  rl.question('Enter employee ID to remove: ', (id) => {
+    const index = employees.findIndex(employee => employee.id === id);
+    if (index !== -1) {
+      const removedEmployee = employees.splice(index, 1);
+      console.log(`Employee ${removedEmployee[0].name} removed.`);
+    } else {
+      console.log('Employee not found.');
+    }
+    mainMenu();
+  });
+}
+
+// Function to handle the main menu
+function mainMenu() {
+  displayMenu();
+  rl.question('Enter your choice: ', (choice) => {
+    switch (choice) {
+      case '1':
+        addEmployee();
+        break;
+      case '2':
+        listEmployees();
+        break;
+      case '3':
+        removeEmployee();
+        break;
+      case '4':
+        rl.close();
+        break;
+      default:
+        console.log('Invalid choice, please try again.');
+        mainMenu();
+    }
+  });
+}
+
+// Start the program by showing the menu
+mainMenu();
